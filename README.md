@@ -1,6 +1,10 @@
 # NeoWasm
 NeoWasm is a Wasm3 Programmable NeoPixel LED Controller with an easy to use Web UI
 
+## Goal
+Create a NeoPixel Controller that is programmed using a builtin web based wasm compiler(s) to create 
+binaries that are stored and loaded from the internal ROM filesystem.
+
 ## Status
 **NeoWasm** right now is still very much in the ‘just hacked together’ … ‘prototype’ … ‘proof of concept’ …  
 
