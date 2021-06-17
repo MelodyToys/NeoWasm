@@ -16,11 +16,7 @@ To rebuild, use `build.sh`.
 
 ## AssemblyScript app
 
-Before building the app, please install npm dependencies:
-```sh
-npm install    # or yarn install
-```
-To rebuild, use `npm run build`.
+To rebuild, use `build.sh`.
 
 ## TinyGo app
 

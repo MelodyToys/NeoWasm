@@ -1,6 +1,6 @@
 # Compile
-cargo build --release
-cp ./target/wasm32-unknown-unknown/release/app.wasm ./
+npm install
+npm run build
 
 # Optimize (optional)
 wasm-opt -O3 app.wasm -o app.wasm

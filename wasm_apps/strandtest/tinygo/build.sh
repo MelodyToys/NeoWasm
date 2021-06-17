@@ -18,3 +18,6 @@ wasm-strip app.wasm
 
 # Convert to C header
 # xxd -i app.wasm > app.wasm.h
+
+# Copy wasm to ROM filesystem
+# cp app.wasm ../../../NeoWasm/data/wasm/strandtest.wasm
