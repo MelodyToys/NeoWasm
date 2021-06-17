@@ -10,4 +10,4 @@ wasm-strip app.wasm
 #wasm2wat --generate-names app.wasm -o app.wat
 
 # Convert to C header
-xxd -i app.wasm > app.wasm.h
+# xxd -i app.wasm > app.wasm.h

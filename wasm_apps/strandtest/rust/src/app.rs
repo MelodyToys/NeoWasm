@@ -1,7 +1,7 @@
 #![no_std]
 
-mod arduino;
-use arduino::*;
+mod neowasm;
+use neowasm::*;
 
 struct App {
     led: u32,

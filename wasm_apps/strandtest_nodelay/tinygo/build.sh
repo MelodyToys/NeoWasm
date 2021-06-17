@@ -7,7 +7,7 @@ export GOROOT=/opt/go1.15.2
 tinygo  build -target wasm                \
         -panic trap -wasm-abi generic     \
         -ldflags="-z stack-size=2048 --max-memory=65536" \
-        -o app.wasm app.go
+        -o app.wasm app.go neowasm.go
 
 # Optimize (optional)
 wasm-opt -Os app.wasm -o app.wasm
@@ -17,4 +17,4 @@ wasm-strip app.wasm
 #wasm2wat --generate-names app.wasm -o app.wat
 
 # Convert to C header
-xxd -i app.wasm > app.wasm.h
+# xxd -i app.wasm > app.wasm.h

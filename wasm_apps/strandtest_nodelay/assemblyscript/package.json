@@ -1,7 +1,7 @@
 {
   "license": "MIT",
   "scripts": {
-    "build": "npm run asbuild:optimized && xxd -i app.wasm > app.wasm.h",
+    "build": "npm run asbuild:optimized",
     "asbuild:optimized": "npx asc app.ts -b app.wasm -t app.wat -O3z --runtime stub --noAssert --use abort="
   },
   "devDependencies": {

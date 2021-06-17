@@ -1,7 +1,7 @@
 #![allow(dead_code)]
 #![allow(non_snake_case)]
 
-#[link(wasm_import_module = "arduino")]
+#[link(wasm_import_module = "neowasm")]
 extern {
   #[link_name = "millis"]         fn _millis() -> u32;
   #[link_name = "delay"]          fn _delay(ms: u32);
