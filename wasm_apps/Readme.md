@@ -25,7 +25,3 @@ To rebuild, use `npm run build`.
 ## TinyGo app
 
 To rebuild, use `build.sh`.
-
-___
-
-**Note:** for all examples, the resulting `wasm` binary is converted to a C header using `xxd`.
