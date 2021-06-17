@@ -8,7 +8,7 @@ NeoWasm is a Wasm3 Programmable NeoPixel LED Controller with an easy to use Web 
 See the [Getting Started Guide](https://github.com/MelodyToys/NeoWasm/blob/main/GetStarted.md)
 
 ## Thank You
-[Wasm3 Labs](https://github.com/wasm3) - [WebAssembly interpreter (Wasm3)](https://github.com/wasm3/wasm3-arduino)
+[Wasm3 Labs](https://github.com/wasm3) - [Wasm3 WebAssembly Interpreter](https://github.com/wasm3/wasm3-arduino)
 
 [me-no-dev](https://github.com/me-no-dev) - [ESPAsyncWebServer](https://github.com/me-no-dev/ESPAsyncWebServer)
 
