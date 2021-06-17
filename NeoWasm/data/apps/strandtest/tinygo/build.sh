@@ -20,4 +20,4 @@ wasm-strip app.wasm
 # xxd -i app.wasm > app.wasm.h
 
 # Copy wasm to ROM filesystem
-# cp app.wasm ../../../NeoWasm/data/wasm/strandtest_nodelay.wasm
+# cp app.wasm ../../../wasm/strandtest.wasm

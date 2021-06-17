@@ -1,6 +1,6 @@
 # Compile
-cargo build --release
-cp ./target/wasm32-unknown-unknown/release/app.wasm ./
+npm install
+npm run build
 
 # Optimize (optional)
 wasm-opt -O3 app.wasm -o app.wasm
@@ -13,4 +13,4 @@ wasm-strip app.wasm
 # xxd -i app.wasm > app.wasm.h
 
 # Copy wasm to ROM filesystem
-# cp app.wasm ../../../NeoWasm/data/wasm/strandtest.wasm
+# cp app.wasm ../../../wasm/strandtest_nodelay.wasm
