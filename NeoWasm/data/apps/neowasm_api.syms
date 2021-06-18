@@ -1,0 +1,14 @@
+millis
+delay
+print
+show
+clear
+setPixelColor
+setPixelColor32
+gamma32
+ColorHSV
+Wheel
+WheelR
+WheelG
+WheelB
+numPixels
