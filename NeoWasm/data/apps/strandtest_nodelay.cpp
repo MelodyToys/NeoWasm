@@ -4,14 +4,14 @@
 #include "neowasm_api.h"
 
 unsigned long	patternPrevious = 0;		// Previous Pattern Millis
-uint8_t			patternCurrent = 0;			// Current Pattern Number
-uint8_t			patternInterval = 5500;		// Pattern Interval (ms)
-unsigned long	pixelPrevious = 0;			// Previous Pixel Millis
-uint8_t			pixelInterval = 50;			// Pixel Interval (ms)
-uint8_t			pixelQueue = 0;				// Pixel Queue
-uint8_t			pixelCycle = 0;				// Pixel Cycle
-uint16_t		pixelCurrent = 0;			// Current Pixel Number
-uint16_t		pixelNumber = numPixels();	// Number of Pixels
+uint8_t		patternCurrent = 0;		// Current Pattern Number
+uint8_t		patternInterval = 5500;		// Pattern Interval (ms)
+unsigned long	pixelPrevious = 0;		// Previous Pixel Millis
+uint8_t		pixelInterval = 50;		// Pixel Interval (ms)
+uint8_t		pixelQueue = 0;			// Pixel Queue
+uint8_t		pixelCycle = 0;			// Pixel Cycle
+uint16_t	pixelCurrent = 0;		// Current Pixel Number
+uint16_t	pixelNumber = numPixels();	// Number of Pixels
 
 // colorWipe()
 void colorWipe(uint8_t r, uint8_t g, uint8_t b, uint8_t wait) {
