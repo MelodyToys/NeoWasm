@@ -11,6 +11,7 @@ wasicc  -Os                                                   \
         -Wl,--allow-undefined-file=neowasm_api.syms           \
         -Wl,--strip-all -nostdlib                             \
         -o strandtest_nodelay.wasm strandtest_nodelay.cpp
+
 # Compile strandtest_wheel
 wasicc  -Os                                                   \
         -z stack-size=4096 -Wl,--initial-memory=65536         \
