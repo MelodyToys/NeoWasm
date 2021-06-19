@@ -1,7 +1,7 @@
 // NeoWasm Demo ~ sfranzyshen
 // strandtest.cpp
 
-#include "neowasm_api.h"
+#include "NeoWasm.h"
 
 // colorWipe()
 void colorWipe(uint32_t color, uint8_t wait) {
@@ -95,4 +95,5 @@ void loop() {
 	theaterChaseRainbow(50);
 	println("strandtest ... loop");
 }
+
 

@@ -1,7 +1,7 @@
 // NeoWasm Demo ~ sfranzyshen
 // strandtest_wheel.cpp
 
-#include "neowasm_api.h"
+#include "NeoWasm.h"
 
 // colorWipe()
 void colorWipe(uint8_t r, uint8_t g, uint8_t b, uint8_t wait) {
