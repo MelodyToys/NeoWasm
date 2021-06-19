@@ -1,4 +1,4 @@
-## NeoWasm WebAssembly example apps
+## NeoWasm
 
 ## C++ app (Arduino)
 
