@@ -2,11 +2,15 @@
 NeoWasm is a Wasm3 Programmable NeoPixel LED Controller for the Arduino ESP environment with an easy to use Web UI
 
 ## Goal
-Create a NeoPixel Controller that is programmed using a builtin web based wasm compiler(s) to create 
+Create a NeoPixel Controller that is programmed using a self hosted web based wasm compiler(s) to create 
 binaries that are stored and loaded from the internal ROM filesystem.
 
 ## Status
-**NeoWasm** right now is still very much in the ‘just hacked together’ … ‘prototype’ … ‘proof of concept’ …  
+**NeoWasm** 
+right now is still very much in the ‘just hacked together’ … ‘prototype’ … ‘proof of concept’ …  
+
+## Note
+NeoWasm is a Arduino Sketch and not a Library ...
 
 ## Getting Started
 See the [Getting Started Guide](https://github.com/MelodyToys/NeoWasm/blob/main/GetStarted.md)
