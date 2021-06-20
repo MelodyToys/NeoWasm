@@ -27,17 +27,17 @@ WASM_IMPORT("neowasm", "numPixels")       uint16_t numPixels       (void);
 WASM_IMPORT("neowasm", "Color")           uint32_t Color           (uint8_t r, uint8_t g, uint8_t b);
 
 static inline size_t strlen(const char *str) {
-  const char *s;
-  for (s = str; *s; ++s);
-  return (s - str);
+	const char *s;
+	for (s = str; *s; ++s);
+	return (s - str);
 }
 
 static inline void print (const char* s) {
-  print(s, strlen(s));
+	print(s, strlen(s));
 }
 
 static inline void println (const char* s) {
-  print(s); print("\n");
+	print(s); print("\n");
 }
 
 WASM_EXPORT
@@ -46,9 +46,8 @@ WASM_EXPORT
 void loop();
 
 WASM_EXPORT
-void _start() {
-}
+void _start() {}
 
-}
+} // extern "C"
 
 #endif // neowasm_api_h
