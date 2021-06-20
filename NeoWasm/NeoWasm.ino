@@ -13,7 +13,6 @@
 #include <ESPAsyncWebServer.h>
 #include <wasm3.h>
 #include <m3_core.h>
-#include <m3_api_defs.h>
 #include <m3_env.h>
 #include <Adafruit_NeoPixel.h>
 
@@ -94,7 +93,7 @@ m3ApiRawFunction(m3_neowasm_millis) {
 }
 
 m3ApiRawFunction(m3_neowasm_delay) {
-	m3ApiGetArg		(uint32_t, ms)
+	m3ApiGetArg		(uint32_t, milli)
 
 	unsigned long targetMillis = millis() + milli;
 	unsigned long currentMillis = millis();
@@ -104,7 +103,6 @@ m3ApiRawFunction(m3_neowasm_delay) {
 		currentMillis = millis();
 	}
 	
-	//delay(ms);
 	m3ApiSuccess();
 }
 
@@ -245,7 +243,7 @@ size_t readWasmSize(const char *path) {
 		return 0;
 	}
 
-	File file = SPIFFS.open(path);
+	File file = SPIFFS.open(path, "r");
 	if(!file) {
 		if(DEBUG) { Serial.println(F("Failed to open file for reading")); }
 		return 0;
@@ -263,7 +261,7 @@ size_t readWasm(const char *path, uint8_t *buf) {
 		return 0;
 	}
 
-	File file = SPIFFS.open(path);
+	File file = SPIFFS.open(path, "r");
 	if(!file) {
 		if(DEBUG) { Serial.println(F("Failed to open file for reading")); }
 		return 0;
@@ -280,7 +278,7 @@ size_t readWasm(const char *path, uint8_t *buf) {
 	return i;
 }
 
-void wasmInit(void *) {
+void wasmInit() {
 	M3Result result = m3Err_none;
 
 	m3_env = m3_NewEnvironment();
@@ -559,7 +557,7 @@ void setup() {
 }
 
 void loop() {
-	if(vm_init)
+	if(vm_init) {
 		M3Result result = m3_CallV(m3_loop);
 		if(result) {
 			M3ErrorInfo info;
@@ -573,5 +571,4 @@ void loop() {
 		}
 	}
 	yield();
-	//delay(0);
 }
