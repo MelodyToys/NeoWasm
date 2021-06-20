@@ -20,7 +20,7 @@
 #define WASM_STACK_SLOTS 2 * 1024
 #define NATIVE_STACK_SIZE 32 * 1024
 
-#define DEBUG     0
+#define DEBUG     1
 #define NEOWASM_VER "1.0-PRE"
 
 struct Config {
