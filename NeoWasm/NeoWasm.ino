@@ -16,8 +16,11 @@
 #include <m3_env.h>
 #include <Adafruit_NeoPixel.h>
 
-#define WASM_STACK_SLOTS 2 * 1024
-#define NATIVE_STACK_SIZE 32 * 1024
+#define WASM_STACK_SLOTS    1024
+#define NATIVE_STACK_SIZE   (32*1024)
+
+// For (most) devices that cannot allocate a 64KiB wasm page
+#define WASM_MEMORY_LIMIT   4096
 
 #define DEBUG     1
 #define NEOWASM_VER "1.0-PRE"
@@ -292,6 +295,10 @@ void wasmInit() {
 		if(DEBUG) { Serial.println(F("NewRuntime: failed")); }
 		return;
 	}
+
+#ifdef WASM_MEMORY_LIMIT
+    m3_runtime->memoryLimit = WASM_MEMORY_LIMIT;
+#endif
 
 	if(spiffs_init) {
 	  
