@@ -47,7 +47,7 @@ void rainbow(uint8_t wait) {
 		i = 0;
 		while(i < numPixels()) {
 			p = (i + j) & 255;
-			setPixelColor(i, WheelR(p), WheelG(p), WheelB(p));
+			setPixelColor(i, wheelR(p), wheelG(p), wheelB(p));
 			i++;
 		}
 		show();
@@ -64,7 +64,7 @@ void rainbowCycle(uint8_t wait) {
 		i = 0;
 		while(i < numPixels()) {
 			p = ((i * 256 / numPixels()) + j) & 255;
-			setPixelColor(i, WheelR(p), WheelG(p), WheelB(p));
+			setPixelColor(i, wheelR(p), wheelG(p), wheelB(p));
 			i++;
 		}
 		show();
@@ -83,7 +83,7 @@ void theaterChaseRainbow(uint8_t wait) {
 			i = 0;
 			while(i < numPixels()) {
 				p = (i + j) % 255;
-				setPixelColor(i + q, WheelR(p), WheelG(p), WheelB(p));    //turn every third pixel on
+				setPixelColor(i + q, wheelR(p), wheelG(p), wheelB(p));    //turn every third pixel on
 				i = i + 3;
 			}
 			show();
