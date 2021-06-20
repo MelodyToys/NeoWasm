@@ -95,17 +95,16 @@ m3ApiRawFunction(m3_neowasm_millis) {
 
 m3ApiRawFunction(m3_neowasm_delay) {
 	m3ApiGetArg		(uint32_t, ms)
-    unsigned long targetMillis = millis() + milli;
-	  unsigned long currentMillis = millis();
+
+	unsigned long targetMillis = millis() + milli;
+	unsigned long currentMillis = millis();
   
-	  while(currentMillis < targetMillis) {
-		  serialRepl();
-		  ArduinoOTA.handle();
-		  ws.cleanupClients();
-		  yield();
-		  currentMillis = millis();
-	  }
-	delay(ms);
+	while(currentMillis < targetMillis) {
+		yield();
+		currentMillis = millis();
+	}
+	
+	//delay(ms);
 	m3ApiSuccess();
 }
 
@@ -573,5 +572,6 @@ void loop() {
 			vm_init = false; // stricked
 		}
 	}
-	delay(0);
+	yield();
+	//delay(0);
 }
