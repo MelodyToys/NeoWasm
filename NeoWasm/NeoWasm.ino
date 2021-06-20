@@ -49,59 +49,6 @@ Adafruit_NeoPixel strip(10, 10, NEO_GRB + NEO_KHZ800); // FIXME: Hack ~ set to a
 
 AsyncWebServer server(80);
 
-size_t readWasmSize(const char *path) {
-	Serial.printf("Reading file: %s\n", path);
-
-	if(!spiffs_init) {
-		Serial.println("Spiffs not mounted");
-		return 0;
-	}
-
-	if(!SPIFFS.exists(path)) {
-		Serial.println("File not found");
-		return 0;
-	}
-
-	File file = SPIFFS.open(path);
-	if(!file) {
-		Serial.println("Failed to open file for reading");
-		return 0;
-	}
-	size_t size = file.size();
-	file.close();
-	return size;
-}
-
-size_t readWasm(const char *path, uint8_t *buf) {
-	Serial.printf("Reading file: %s\n", path);
-
-	if(!spiffs_init) {
-		Serial.println("Spiffs not mounted");
-		return 0;
-	}
-	
-	if(!SPIFFS.exists(path)) {
-		Serial.println("File not found");
-		return 0;
-	}
-
-	File file = SPIFFS.open(path);
-	if(!file) {
-		Serial.println("Failed to open file for reading");
-		return 0;
-	}
-
-	Serial.println("Read from file: ");
-	size_t i = 0;
-	while(file.available()) {
-		buf[i] = file.read();
-		i++;
-	}
-
-	file.close();
-	return i;
-}
-
 uint8_t wheelR(uint8_t Pos) {
   Pos = 255 - Pos;
   if(Pos < 85) { return 255 - Pos * 3; }
@@ -155,13 +102,13 @@ void wasmInit(void *) {
 
 	if(spiffs_init) {
 	  
-		size_t wasm_size = readWasmSize("/init.wasm");
+		size_t wasm_size = m3_readWasmSize("/init.wasm");
 		if(wasm_size == 0) {
 			Serial.println("ReadWasm: File not found");
 			return;
 		}
 		uint8_t buffer[wasm_size];
-		size_t read_bytes = readWasm("/init.wasm", buffer);
+		size_t read_bytes = m3_readWasm("/init.wasm", buffer);
 		if(read_bytes == 0) {
 			Serial.println("ReadWasm: File not found")
 			return;

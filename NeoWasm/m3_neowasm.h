@@ -9,7 +9,9 @@ extern "C"
 #endif
 
   M3Result m3_LinkArduino(IM3Runtime runtime);
-
+  size_t m3_readWasmSize(const char *path);
+  size_t m3_readWasm(const char *path, uint8_t *buf);
+  
 #if defined(__cplusplus)
 }
 #endif
