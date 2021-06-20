@@ -155,13 +155,13 @@ void wasmInit(void *) {
 
 	if(spiffs_init) {
 	  
-		size_t wasm_size = readWasmFileSize("/init.wasm");
+		size_t wasm_size = readWasmSize("/init.wasm");
 		if(wasm_size == 0) {
 			Serial.println("ReadWasm: File not found");
 			return;
 		}
 		uint8_t buffer[wasm_size];
-		size_t read_bytes = readWasmFile("/init.wasm", buffer);
+		size_t read_bytes = readWasm("/init.wasm", buffer);
 		if(read_bytes == 0) {
 			Serial.println("ReadWasm: File not found")
 			return;
