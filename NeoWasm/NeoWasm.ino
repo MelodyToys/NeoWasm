@@ -46,14 +46,14 @@ bool    spiffs_init = false;
 IM3Environment	m3_env;
 IM3Runtime		m3_runtime;
 IM3Module		m3_module;
-IM3Function		m3_setup;
-IM3Function		m3_loop;
+IM3Function		m3_start;
+IM3Function		m3_run;
 
 Adafruit_NeoPixel strip(10, 10, NEO_GRB + NEO_KHZ800); // Hack ~ set to anything ... then redefine in setup()
 
 AsyncWebServer server(80);
 
-uint8_t wheelR(uint8_t Pos) {
+uint8_t WheelR(uint8_t Pos) {
 	Pos = 255 - Pos;
 	if(Pos < 85) { return 255 - Pos * 3; }
 	if(Pos < 170) { return 0; }
@@ -61,7 +61,7 @@ uint8_t wheelR(uint8_t Pos) {
 	return Pos * 3;
 }
 
-uint8_t wheelG(uint8_t Pos) {
+uint8_t WheelG(uint8_t Pos) {
 	Pos = 255 - Pos;
 	if(Pos < 85) { return 0; }
 	if(Pos < 170) { Pos -= 85; return Pos * 3; }
@@ -69,14 +69,14 @@ uint8_t wheelG(uint8_t Pos) {
 	return 255 - Pos * 3;
 }
 
-uint8_t wheelB(uint8_t Pos) {
+uint8_t WheelB(uint8_t Pos) {
 	Pos = 255 - Pos;
 	if(Pos < 85) { return Pos * 3; }
 	if(Pos < 170) { Pos -= 85; return 255 - Pos * 3; }
 	return 0;
 }
 
-uint32_t wheel(uint8_t Pos) {
+uint32_t Wheel(uint8_t Pos) {
 	Pos = 255 - Pos;
 	if(Pos < 85) {
 		return strip.Color(255 - Pos * 3, 0, Pos * 3);
@@ -179,32 +179,32 @@ m3ApiRawFunction(m3_neowasm_Color) {
     m3ApiReturn(strip.Color(r, g, b));
 }
 
-m3ApiRawFunction(m3_neowasm_wheel) {
+m3ApiRawFunction(m3_neowasm_Wheel) {
     m3ApiReturnType (uint32_t)
     m3ApiGetArg     (uint8_t, pos)
 	
-    m3ApiReturn(wheel(pos));
+    m3ApiReturn(Wheel(pos));
 }
 
-m3ApiRawFunction(m3_neowasm_wheelR) {
+m3ApiRawFunction(m3_neowasm_WheelR) {
     m3ApiReturnType (uint8_t)
     m3ApiGetArg     (uint8_t, pos)
 	
-    m3ApiReturn(wheelR(pos));
+    m3ApiReturn(WheelR(pos));
 }
 
-m3ApiRawFunction(m3_neowasm_wheelG) {
+m3ApiRawFunction(m3_neowasm_WheelG) {
     m3ApiReturnType (uint8_t)
     m3ApiGetArg     (uint8_t, pos)
 	
-    m3ApiReturn(wheelR(pos));
+    m3ApiReturn(WheelR(pos));
 }
 
-m3ApiRawFunction(m3_neowasm_wheelB) {
+m3ApiRawFunction(m3_neowasm_WheelB) {
     m3ApiReturnType (uint8_t)
     m3ApiGetArg     (uint8_t, pos)
 	
-    m3ApiReturn(wheelR(pos));
+    m3ApiReturn(WheelR(pos));
 }
 
 // Dummy, for TinyGO
@@ -225,10 +225,10 @@ M3Result m3_LinkArduino(IM3Runtime runtime) {
 	m3_LinkRawFunction(module, neowasm, "setPixelColor32", "v(ii)", &m3_neowasm_setPixelColor32);
 	m3_LinkRawFunction(module, neowasm, "gamma32", "i(i)", &m3_neowasm_gamma32);
 	m3_LinkRawFunction(module, neowasm, "ColorHSV", "i(iii)", &m3_neowasm_ColorHSV);
-	m3_LinkRawFunction(module, neowasm, "wheel", "i(i)", &m3_neowasm_wheel);
-	m3_LinkRawFunction(module, neowasm, "wheelR", "i(i)", &m3_neowasm_wheelR);
-	m3_LinkRawFunction(module, neowasm, "wheelG", "i(i)", &m3_neowasm_wheelG);
-	m3_LinkRawFunction(module, neowasm, "wheelB", "i(i)", &m3_neowasm_wheelB);
+	m3_LinkRawFunction(module, neowasm, "Wheel", "i(i)", &m3_neowasm_Wheel);
+	m3_LinkRawFunction(module, neowasm, "WheelR", "i(i)", &m3_neowasm_WheelR);
+	m3_LinkRawFunction(module, neowasm, "WheelG", "i(i)", &m3_neowasm_WheelG);
+	m3_LinkRawFunction(module, neowasm, "WheelB", "i(i)", &m3_neowasm_WheelB);
 	m3_LinkRawFunction(module, neowasm, "numPixels", "i()", &m3_neowasm_numPixels);
 	m3_LinkRawFunction(module, neowasm, "Color", "i(iii)", &m3_neowasm_Color);
   
@@ -335,16 +335,16 @@ void wasmInit() {
 			return;
 		}
 
-		result = m3_FindFunction(&m3_setup, m3_runtime, "setup");
+		result = m3_FindFunction(&m3_start, m3_runtime, "start");
 		if(result) {
-			if(DEBUG) { Serial.print(F("FindFunction setup: ")); }
+			if(DEBUG) { Serial.print(F("FindFunction start: ")); }
 			if(DEBUG) { Serial.println(result); }
 			//return; // stricked 
 		}
   
-		result = m3_FindFunction(&m3_loop, m3_runtime, "loop");
+		result = m3_FindFunction(&m3_run, m3_runtime, "run");
 		if(result) {
-			if(DEBUG) { Serial.print(F("FindFunction loop: ")); }
+			if(DEBUG) { Serial.print(F("FindFunction run: ")); }
 			if(DEBUG) { Serial.println(result); }
 			return; // stricked
 		} else {
@@ -352,7 +352,7 @@ void wasmInit() {
 		Serial.println(F("WebAssembly VM Running...\n"));
 		}
 		
-		result = m3_CallV(m3_setup);
+		result = m3_CallV(m3_start);
 
 		if(result) {
 			M3ErrorInfo info;
@@ -565,7 +565,7 @@ void setup() {
 
 void loop() {
 	if(vm_init) {
-		M3Result result = m3_CallV(m3_loop);
+		M3Result result = m3_CallV(m3_run);
 		if(result) {
 			M3ErrorInfo info;
 			m3_GetErrorInfo(m3_runtime, &info);

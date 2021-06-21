@@ -76,13 +76,13 @@ void theaterChaseRainbow(uint8_t wait) {
 	}
 }
 
-// setup()
-void setup() {
+// start()
+void start() {
 	println("\nstrandtest ... start");
 }
 
-// loop()
-void loop() {
+// run()
+void run() {
 	colorWipe(Color(255, 0, 0), 50); // Red
 	colorWipe(Color(0, 255, 0), 50); // Green
 	colorWipe(Color(0, 0, 255), 50); // Blue

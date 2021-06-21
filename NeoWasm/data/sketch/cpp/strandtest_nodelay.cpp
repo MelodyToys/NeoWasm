@@ -3,15 +3,15 @@
 
 #include "NeoWasm.h"
 
-unsigned long	    patternPrevious = 0;	// Previous Pattern Millis
-uint8_t		    patternCurrent = 0;		// Current Pattern Number
-uint8_t		    patternInterval = 5500;	// Pattern Interval (ms)
-unsigned long	    pixelPrevious = 0;		// Previous Pixel Millis
-uint8_t		    pixelInterval = 50;		// Pixel Interval (ms)
-uint8_t		    pixelQueue = 0;		// Pixel Queue
-uint8_t		    pixelCycle = 0;		// Pixel Cycle
-uint16_t	    pixelCurrent = 0;		// Current Pixel Number
-uint16_t	    pixelNumber = numPixels();	// Number of Pixels
+unsigned long	patternPrevious;	// Previous Pattern Millis
+uint8_t			patternCurrent;		// Current Pattern Number
+uint8_t			patternInterval;	// Pattern Interval (ms)
+unsigned long	pixelPrevious;		// Previous Pixel Millis
+uint8_t			pixelInterval;		// Pixel Interval (ms)
+uint8_t			pixelQueue;			// Pixel Queue
+uint8_t			pixelCycle;			// Pixel Cycle
+uint16_t		pixelCurrent;		// Current Pixel Number
+uint16_t		pixelNumber;		// Number of Pixels
 
 // colorWipe()
 void colorWipe(uint8_t r, uint8_t g, uint8_t b, uint8_t wait) {
@@ -32,7 +32,7 @@ void rainbow(uint8_t wait) {
 	uint8_t p = 0;
 	while(i < pixelNumber) {
 		p = (i + pixelCycle) & 255;
-		setPixelColor(i, wheelR(p), wheelG(p), wheelB(p));
+		setPixelColor(i, WheelR(p), WheelG(p), WheelB(p));
 		i++;
 	}
 	show();
@@ -47,7 +47,7 @@ void rainbowCycle(uint8_t wait) {
 	uint8_t p = 0;
 	while( i < pixelNumber) {
 		p = ((i * 256 / pixelNumber) + pixelCycle) & 255;
-		setPixelColor(i, wheelR(p), wheelG(p), wheelB(p));
+		setPixelColor(i, WheelR(p), WheelG(p), WheelB(p));
 		i++;
 	}
 	show();
@@ -80,7 +80,7 @@ void theaterChaseRainbow(uint8_t wait) {
 	uint8_t p = 0;
 	while(i < pixelNumber) {
 		p = (i + pixelCycle) % 255;
-		setPixelColor(i + pixelQueue, wheelR(p), wheelG(p), wheelB(p));
+		setPixelColor(i + pixelQueue, WheelR(p), WheelG(p), WheelB(p));
 		i = i + 3;
 	}
 	show();
@@ -95,13 +95,23 @@ void theaterChaseRainbow(uint8_t wait) {
 	if(pixelCycle >= 256) pixelCycle = 0;
 }
 
-// setup()
-void setup() {
+// start()
+void start() {
+	patternPrevious = 0;	// Previous Pattern Millis
+	patternCurrent = 0;		// Current Pattern Number
+	patternInterval = 5500;	// Pattern Interval (ms)
+	pixelPrevious = 0;		// Previous Pixel Millis
+	pixelInterval = 50;		// Pixel Interval (ms)
+	pixelQueue = 0;		// Pixel Queue
+	pixelCycle = 0;		// Pixel Cycle
+	pixelCurrent = 0;		// Current Pixel Number
+	pixelNumber = numPixels();	// Number of Pixels	
+	
 	println("\nstrandtest_nodelay ... start");
 }
 
-// loop()
-void loop() {
+// run()
+void run() {
 	unsigned long currentMillis = millis();
 	if((currentMillis - patternPrevious) >= patternInterval) {
 		patternPrevious = currentMillis ;

@@ -19,10 +19,10 @@ WASM_IMPORT("neowasm", "setPixelColor")   void setPixelColor       (uint16_t n, 
 WASM_IMPORT("neowasm", "setPixelColor32") void setPixelColor32     (uint16_t n, uint32_t c);
 WASM_IMPORT("neowasm", "gamma32")         uint32_t gamma32         (uint32_t x);
 WASM_IMPORT("neowasm", "ColorHSV")        uint32_t ColorHSV        (uint16_t hue, uint8_t sat=255, uint8_t val=255);
-WASM_IMPORT("neowasm", "wheel")           uint32_t wheel           (uint8_t Pos);
-WASM_IMPORT("neowasm", "wheelR")          uint8_t wheelR           (uint8_t Pos);
-WASM_IMPORT("neowasm", "wheelG")          uint8_t wheelG           (uint8_t Pos);
-WASM_IMPORT("neowasm", "wheelB")          uint8_t wheelB           (uint8_t Pos);
+WASM_IMPORT("neowasm", "Wheel")           uint32_t Wheel           (uint8_t Pos);
+WASM_IMPORT("neowasm", "WheelR")          uint8_t WheelR           (uint8_t Pos);
+WASM_IMPORT("neowasm", "WheelG")          uint8_t WheelG           (uint8_t Pos);
+WASM_IMPORT("neowasm", "WheelB")          uint8_t WheelB           (uint8_t Pos);
 WASM_IMPORT("neowasm", "numPixels")       uint16_t numPixels       (void);
 WASM_IMPORT("neowasm", "Color")           uint32_t Color           (uint8_t r, uint8_t g, uint8_t b);
 
@@ -41,9 +41,9 @@ static inline void println (const char* s) {
 }
 
 WASM_EXPORT
-void setup();
+void start();
 WASM_EXPORT
-void loop();
+void run();
 
 WASM_EXPORT
 void _start() {}
