@@ -1,3 +1,8 @@
+## Update - 6/22/2021
+I am having a hell of a time getting wasm3 to work on the esp8266 esp32 ... Under the TESTING folder are the files that I used to step through each stage of development ... I can individually verify each code section one by one with success ... but put it all together or multiple parts together and it fails ... usually with no message ... or an obscure error message ... 
+
+**my hopes for wasm3 seem to have been dashed ...
+
 # NeoWasm 
 **NeoWasm** is a Wasm3 Programmable NeoPixel LED Controller for the Arduino ESP environment with an easy to use Web UI
 
@@ -7,9 +12,6 @@ binaries that are stored and loaded from the internal ROM filesystem.
 
 ## Status
 **NeoWasm** is still very much in the ‘just hacked together’ … ‘prototype’ … ‘proof of concept’ stage …  
-
-## Update
-I am having a hell of a time getting wasm3 to work on the esp8266 esp32 ... Under the TESTING folder are the files that I used to step through each stage of development ... I can individually verify each code section one by one with success ... but put it all together or multiple parts together and it fails ... usually with no message ... or an obscure error message ... my hopes for wasm3 seem to have been dashed ...
 
 ## Note
 **NeoWasm** is a Arduino Sketch and not a Library ...
