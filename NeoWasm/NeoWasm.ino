@@ -246,7 +246,7 @@ size_t readWasmSize(const char *path) {
 		return 0;
 	}
 
-	File file = SPIFFS.open(path, "r");
+	File file = SPIFFS.open(path, "rb");
 	if(!file) {
 		if(DEBUG) { Serial.println(F("Failed to open file for reading")); }
 		return 0;
@@ -264,7 +264,7 @@ size_t readWasm(const char *path, uint8_t *buf) {
 		return 0;
 	}
 
-	File file = SPIFFS.open(path, "r");
+	File file = SPIFFS.open(path, "rb");
 	if(!file) {
 		if(DEBUG) { Serial.println(F("Failed to open file for reading")); }
 		return 0;
@@ -307,6 +307,8 @@ void wasmInit() {
 			if(DEBUG) { Serial.println(F("ReadWasm: File not found")); }
 			return;
 		}
+
+	    //uint8_t * buffer = new uint8_t[app_wasm_len];
 		uint8_t buffer[wasm_size];
 		size_t read_bytes = readWasm("/init.wasm", buffer);
 		if(read_bytes == 0) {
@@ -320,7 +322,9 @@ void wasmInit() {
 			if(DEBUG) { Serial.println(result); }
 			return;
 		}
-	
+
+	    //delete buffer;
+
 		result = m3_LoadModule(m3_runtime, m3_module);
 		if(result) {
 			if(DEBUG) { Serial.print(F("LoadModule: ")); }
