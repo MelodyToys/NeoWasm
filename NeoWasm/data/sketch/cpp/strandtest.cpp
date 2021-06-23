@@ -36,53 +36,54 @@ void theaterChase(uint32_t color, uint8_t wait) {
 
 // rainbow()
 void rainbow(uint8_t wait) {
-	long firstPixelHue = 0;
-	uint8_t i, pixelHue;
-	while(firstPixelHue < 5 * 65536) {
-		i = 0;
-		while(i < numPixels()) {
-			pixelHue = firstPixelHue + (i * 65536L / numPixels());
-			setPixelColor32(i, gamma32(ColorHSV(pixelHue)));
-			i++;
-		}
-		show();
-		delay(wait);
-		firstPixelHue += 256;
+	uint16_t i = 0;
+	uint8_t p = 0;
+	uint8_t	c = 0;
+	
+	while(i < numPixels()) {
+		p = (i + c) & 255;
+		setPixelColor32(i, Wheel(p));
+		i++;
 	}
+	show();
+	delay(wait);
+	c++;
+	if(c > 255) c = 0;
 }
 
 // theaterChaseRainbow()
 void theaterChaseRainbow(uint8_t wait) {
-	uint8_t firstPixelHue = 0;
-	uint8_t a = 0, b, c, hue;
-	uint32_t color;
- 	while(a < 30) {
-		b = 0;
-		while(b < 3) {
-			clear();
-			c = b;
-			while(c < numPixels()) {
-				hue = firstPixelHue + c * 65536L / numPixels();
-				color = gamma32(ColorHSV(hue));
-				setPixelColor32(c, color);
-				c += 3;
+	uint8_t j = 0, q, p;
+	uint16_t i;
+	while(j <= 255) {     // cycle all 256 colors in the wheel
+		q = 0;
+		while(q < 3) {
+			i = 0;
+			while(i < numPixels()) {
+				p = (i + j) % 255;
+				setPixelColor32(i + q, Wheel(p));    //turn every third pixel on
+				i = i + 3;
 			}
 			show();
 			delay(wait);
-			firstPixelHue += 65536 / 90;
-			b++;
+			i = 0;
+			while(i < numPixels()) {
+				setPixelColor32(i + q, Color(0, 0, 0));        //turn every third pixel off
+				i = i + 3;
+			}
+			q++;
 		}
-		a++;
+		j++;
 	}
 }
 
-// start()
-void start() {
+// setup()
+void setup() {
 	println("\nstrandtest ... start");
 }
 
-// run()
-void run() {
+// loop()
+void loop() {
 	colorWipe(Color(255, 0, 0), 50); // Red
 	colorWipe(Color(0, 255, 0), 50); // Green
 	colorWipe(Color(0, 0, 255), 50); // Blue
@@ -95,5 +96,4 @@ void run() {
 	theaterChaseRainbow(50);
 	println("strandtest ... loop");
 }
-
 

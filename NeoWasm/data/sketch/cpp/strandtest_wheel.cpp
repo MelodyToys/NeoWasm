@@ -43,7 +43,7 @@ void theaterChase(uint8_t r, uint8_t g, uint8_t b, uint8_t wait) {
 void rainbow(uint8_t wait) {
 	uint16_t j = 0, i;
 	uint8_t p;
-	while(j < 256) {
+	while(j <= 255) {
 		i = 0;
 		while(i < numPixels()) {
 			p = (i + j) & 255;
@@ -60,7 +60,7 @@ void rainbow(uint8_t wait) {
 void rainbowCycle(uint8_t wait) {
 	uint16_t j = 0, i;
 	uint8_t p;
-	while(j < 256 * 5) { // 5 cycles of all colors on wheel
+	while(j <= 255 * 5) { // 5 cycles of all colors on wheel
 		i = 0;
 		while(i < numPixels()) {
 			p = ((i * 256 / numPixels()) + j) & 255;
@@ -77,7 +77,7 @@ void rainbowCycle(uint8_t wait) {
 void theaterChaseRainbow(uint8_t wait) {
 	uint8_t j = 0, q, p;
 	uint16_t i;
-	while(j < 256) {     // cycle all 256 colors in the wheel
+	while(j <= 255) {     // cycle all 256 colors in the wheel
 		q = 0;
 		while(q < 3) {
 			i = 0;
@@ -99,13 +99,13 @@ void theaterChaseRainbow(uint8_t wait) {
 	}
 }
 
-// start()
-void start() {
+// setup()
+void setup() {
 	println("\nstrandtest_wheel ... start");
 }
 
-// run()
-void run() {
+// loop()
+void loop() {
 	colorWipe(255, 0, 0, 50); // Red
 	colorWipe(0, 255, 0, 50); // Green
 	colorWipe(0, 0, 255, 50); // Blue

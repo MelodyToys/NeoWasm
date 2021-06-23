@@ -134,13 +134,6 @@ m3ApiRawFunction(m3_neowasm_show) {
     m3ApiSuccess();
 }
 
-m3ApiRawFunction(m3_neowasm_gamma32) {
-    m3ApiReturnType (uint32_t)
-    m3ApiGetArg     (uint32_t, color)
-	
-    m3ApiReturn(strip.gamma32(color));
-}
-
 m3ApiRawFunction(m3_neowasm_setPixelColor) {
 	m3ApiGetArg     (uint16_t, n)
 	m3ApiGetArg     (uint8_t, r)
@@ -161,6 +154,14 @@ m3ApiRawFunction(m3_neowasm_setPixelColor32) {
 	m3ApiSuccess();
 }
 
+/*
+m3ApiRawFunction(m3_neowasm_gamma32) {
+    m3ApiReturnType (uint32_t)
+    m3ApiGetArg     (uint32_t, color)
+	
+    m3ApiReturn(strip.gamma32(color));
+}
+
 m3ApiRawFunction(m3_neowasm_ColorHSV) {
     m3ApiReturnType (uint32_t)
     m3ApiGetArg     (uint16_t, hue)
@@ -169,6 +170,7 @@ m3ApiRawFunction(m3_neowasm_ColorHSV) {
 	
     m3ApiReturn(strip.ColorHSV(hue, sat, val));
 }
+*/
 
 m3ApiRawFunction(m3_neowasm_Color) {
     m3ApiReturnType (uint32_t)
@@ -223,8 +225,8 @@ M3Result m3_LinkArduino(IM3Runtime runtime) {
 	m3_LinkRawFunction(module, neowasm, "clear", "v()", &m3_neowasm_clear);
 	m3_LinkRawFunction(module, neowasm, "setPixelColor", "v(iiii)", &m3_neowasm_setPixelColor);
 	m3_LinkRawFunction(module, neowasm, "setPixelColor32", "v(ii)", &m3_neowasm_setPixelColor32);
-	m3_LinkRawFunction(module, neowasm, "gamma32", "i(i)", &m3_neowasm_gamma32);
-	m3_LinkRawFunction(module, neowasm, "ColorHSV", "i(iii)", &m3_neowasm_ColorHSV);
+	//m3_LinkRawFunction(module, neowasm, "gamma32", "i(i)", &m3_neowasm_gamma32);
+	//m3_LinkRawFunction(module, neowasm, "ColorHSV", "i(iii)", &m3_neowasm_ColorHSV);
 	m3_LinkRawFunction(module, neowasm, "Wheel", "i(i)", &m3_neowasm_Wheel);
 	m3_LinkRawFunction(module, neowasm, "WheelR", "i(i)", &m3_neowasm_WheelR);
 	m3_LinkRawFunction(module, neowasm, "WheelG", "i(i)", &m3_neowasm_WheelG);
@@ -282,6 +284,13 @@ size_t readWasm(const char *path, uint8_t *buf) {
 }
 
 void wasmInit() {
+
+	if(!spiffs_init) { // Don't try to load the file if the filestsrem isn't mounted
+		if(DEBUG) { Serial.println(F("/init.wasm failed")); }
+		vm_init = false;
+		return;
+    }
+
 	M3Result result = m3Err_none;
 
 	m3_env = m3_NewEnvironment();
@@ -300,78 +309,80 @@ void wasmInit() {
     m3_runtime->memoryLimit = WASM_MEMORY_LIMIT;
 #endif
 
-	if(spiffs_init) {
 	  
-		size_t wasm_size = readWasmSize("/init.wasm");
-		if(wasm_size == 0) {
-			if(DEBUG) { Serial.println(F("ReadWasm: File not found")); }
-			return;
-		}
-
-	    //uint8_t * buffer = new uint8_t[app_wasm_len];
-		uint8_t buffer[wasm_size];
-		size_t read_bytes = readWasm("/init.wasm", buffer);
-		if(read_bytes == 0) {
-			if(DEBUG) { Serial.println(F("ReadWasm: File not found")); }
-			return;
-		}
-		
-		result = m3_ParseModule(m3_env, &m3_module, buffer, wasm_size);
-		if(result) {
-			if(DEBUG) { Serial.print(F("ParseModule: ")); }
-			if(DEBUG) { Serial.println(result); }
-			return;
-		}
-
-	    //delete buffer;
-
-		result = m3_LoadModule(m3_runtime, m3_module);
-		if(result) {
-			if(DEBUG) { Serial.print(F("LoadModule: ")); }
-			if(DEBUG) { Serial.println(result); }
-			return;
-		}
-
-		result = m3_LinkArduino(m3_runtime);
-		if(result) {
-			if(DEBUG) { Serial.print(F("LinkArduino: ")); }
-			if(DEBUG) { Serial.println(result); }
-			return;
-		}
-
-		result = m3_FindFunction(&m3_start, m3_runtime, "start");
-		if(result) {
-			if(DEBUG) { Serial.print(F("FindFunction start: ")); }
-			if(DEBUG) { Serial.println(result); }
-			//return; // stricked 
-		}
-  
-		result = m3_FindFunction(&m3_run, m3_runtime, "run");
-		if(result) {
-			if(DEBUG) { Serial.print(F("FindFunction run: ")); }
-			if(DEBUG) { Serial.println(result); }
-			return; // stricked
-		} else {
-			vm_init = true;
-		Serial.println(F("WebAssembly VM Running...\n"));
-		}
-		
-		result = m3_CallV(m3_start);
-
-		if(result) {
-			M3ErrorInfo info;
-			m3_GetErrorInfo(m3_runtime, &info);
-			if(DEBUG) { Serial.print(F("Error: ")); }
-			if(DEBUG) { Serial.print(result); }
-			if(DEBUG) { Serial.print(" ("); }
-			if(DEBUG) { Serial.print(info.message); }
-			if(DEBUG) { Serial.println(")"); }
-			// vm_init = false; // stricked
-		}
-    } else {
-		if(DEBUG) { Serial.println(F("/init.wasm failed")); }
-		vm_init = false;
-    }
+	size_t wasm_size = readWasmSize("/init.wasm");
+	if(wasm_size == 0) {
+		if(DEBUG) { Serial.println(F("ReadWasm: File not found")); }
+		return;
+	}
+	
+/*
+	uint8_t * buffer = new uint8_t[app_wasm_len];
+	if (buf) {
+		memcpy_P(buf, app_wasm, app_wasm_len);
+		//Serial.write(buf, app_wasm_len); // dump the buffer.
+	}
+*/
+	uint8_t buffer[wasm_size];
+	
+	size_t read_bytes = readWasm("/init.wasm", buffer);
+	if(read_bytes == 0) {
+		if(DEBUG) { Serial.println(F("ReadWasm: File not found")); }
+		return;
+	}
+	
+	result = m3_ParseModule(m3_env, &m3_module, buffer, wasm_size);
+	if(result) {
+		if(DEBUG) { Serial.print(F("ParseModule: ")); }
+		if(DEBUG) { Serial.println(result); }
+		return;
+	}
+	
+	//delete buffer;
+	
+	result = m3_LoadModule(m3_runtime, m3_module);
+	if(result) {
+		if(DEBUG) { Serial.print(F("LoadModule: ")); }
+		if(DEBUG) { Serial.println(result); }
+		return;
+	}
+	
+	result = m3_LinkArduino(m3_runtime);
+	if(result) {
+		if(DEBUG) { Serial.print(F("LinkArduino: ")); }
+		if(DEBUG) { Serial.println(result); }
+		return;
+	}
+	
+	result = m3_FindFunction(&m3_start, m3_runtime, "setup");
+	if(result) {
+		if(DEBUG) { Serial.print(F("FindFunction start: ")); }
+		if(DEBUG) { Serial.println(result); }
+		return; // stricked 
+	}
+	
+	result = m3_FindFunction(&m3_run, m3_runtime, "loop");
+	if(result) {
+		if(DEBUG) { Serial.print(F("FindFunction loop: ")); }
+		if(DEBUG) { Serial.println(result); }
+		return; // stricked
+	} else {
+		vm_init = true;
+	Serial.println(F("WebAssembly VM Running...\n"));
+	}
+	
+	result = m3_CallV(m3_start);
+	
+	if(result) {
+		M3ErrorInfo info;
+		m3_GetErrorInfo(m3_runtime, &info);
+		if(DEBUG) { Serial.print(F("Error: ")); }
+		if(DEBUG) { Serial.print(result); }
+		if(DEBUG) { Serial.print(" ("); }
+		if(DEBUG) { Serial.print(info.message); }
+		if(DEBUG) { Serial.println(")"); }
+		// vm_init = false; // stricked
+	}
 }
 
 void handleUpload(AsyncWebServerRequest *request, String filename, size_t index, uint8_t *data, size_t len, bool final) {

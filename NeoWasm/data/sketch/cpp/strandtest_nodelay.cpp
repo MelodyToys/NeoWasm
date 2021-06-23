@@ -4,12 +4,12 @@
 #include "NeoWasm.h"
 
 unsigned long	patternPrevious;	// Previous Pattern Millis
-uint8_t			patternCurrent;		// Current Pattern Number
-uint8_t			patternInterval;	// Pattern Interval (ms)
+int 			patternCurrent;		// Current Pattern Number
+int 			patternInterval;	// Pattern Interval (ms)
 unsigned long	pixelPrevious;		// Previous Pixel Millis
-uint8_t			pixelInterval;		// Pixel Interval (ms)
-uint8_t			pixelQueue;			// Pixel Queue
-uint8_t			pixelCycle;			// Pixel Cycle
+int 			pixelInterval;		// Pixel Interval (ms)
+int 			pixelQueue;			// Pixel Queue
+int 			pixelCycle;			// Pixel Cycle
 uint16_t		pixelCurrent;		// Current Pixel Number
 uint16_t		pixelNumber;		// Number of Pixels
 
@@ -29,7 +29,7 @@ void colorWipe(uint8_t r, uint8_t g, uint8_t b, uint8_t wait) {
 void rainbow(uint8_t wait) {
 	if(pixelInterval != wait) pixelInterval = wait;
 	uint16_t i = 0;
-	uint8_t p = 0;
+	int p = 0;
 	while(i < pixelNumber) {
 		p = (i + pixelCycle) & 255;
 		setPixelColor(i, WheelR(p), WheelG(p), WheelB(p));
@@ -37,28 +37,28 @@ void rainbow(uint8_t wait) {
 	}
 	show();
 	pixelCycle++;
-	if(pixelCycle >= 256) pixelCycle = 0;
+	if(pixelCycle >= 255) pixelCycle = 0;
 }
 
 // rainbowCycle()
 void rainbowCycle(uint8_t wait) {
 	if(pixelInterval != wait) pixelInterval = wait;
 	uint16_t i = 0;
-	uint8_t p = 0;
+	int p = 0;
 	while( i < pixelNumber) {
-		p = ((i * 256 / pixelNumber) + pixelCycle) & 255;
+		p = ((i * 255 / pixelNumber) + pixelCycle) & 255;
 		setPixelColor(i, WheelR(p), WheelG(p), WheelB(p));
 		i++;
 	}
 	show();
 	pixelCycle++;
-	if(pixelCycle >= 256 * 5) pixelCycle = 0;
+	if(pixelCycle >= 255 * 5) pixelCycle = 0;
 }
 
 // theaterChase()
 void theaterChase(uint8_t r, uint8_t g, uint8_t b, uint8_t wait) {
 	if(pixelInterval != wait) pixelInterval = wait;
-	uint8_t i = 0;
+	int i = 0;
 	while(i < pixelNumber) {
 		setPixelColor(i + pixelQueue, r, g, b);
 		i = i + 3;
@@ -76,8 +76,8 @@ void theaterChase(uint8_t r, uint8_t g, uint8_t b, uint8_t wait) {
 // theaterChaseRainbow()
 void theaterChaseRainbow(uint8_t wait) {
 	if(pixelInterval != wait) pixelInterval = wait;
-	uint8_t i = 0;
-	uint8_t p = 0;
+	int i = 0;
+	int p = 0;
 	while(i < pixelNumber) {
 		p = (i + pixelCycle) % 255;
 		setPixelColor(i + pixelQueue, WheelR(p), WheelG(p), WheelB(p));
@@ -92,26 +92,26 @@ void theaterChaseRainbow(uint8_t wait) {
 	pixelQueue++;
 	pixelCycle++;
 	if(pixelQueue >= 3) pixelQueue = 0;
-	if(pixelCycle >= 256) pixelCycle = 0;
+	if(pixelCycle >= 255) pixelCycle = 0;
 }
 
-// start()
-void start() {
-	patternPrevious = 0;	// Previous Pattern Millis
-	patternCurrent = 0;		// Current Pattern Number
-	patternInterval = 5500;	// Pattern Interval (ms)
-	pixelPrevious = 0;		// Previous Pixel Millis
-	pixelInterval = 50;		// Pixel Interval (ms)
-	pixelQueue = 0;		// Pixel Queue
-	pixelCycle = 0;		// Pixel Cycle
-	pixelCurrent = 0;		// Current Pixel Number
-	pixelNumber = numPixels();	// Number of Pixels	
+// setup()
+void setup() {
+	patternPrevious	= 0;	       // Previous Pattern Millis
+	patternCurrent	= 0;		   // Current Pattern Number
+	patternInterval	= 5500;	       // Pattern Interval (ms)
+	pixelPrevious	= 0;		   // Previous Pixel Millis
+	pixelInterval	= 50;		   // Pixel Interval (ms)
+	pixelQueue		= 0;		   // Pixel Queue
+	pixelCycle		= 0;		   // Pixel Cycle
+	pixelCurrent	= 0;		   // Current Pixel Number
+	pixelNumber		= numPixels(); // Number of Pixels	
 	
 	println("\nstrandtest_nodelay ... start");
 }
 
-// run()
-void run() {
+// loop()
+void loop() {
 	unsigned long currentMillis = millis();
 	if((currentMillis - patternPrevious) >= patternInterval) {
 		patternPrevious = currentMillis ;

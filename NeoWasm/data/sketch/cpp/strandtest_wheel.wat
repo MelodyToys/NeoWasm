@@ -125,14 +125,14 @@
       i32.lt_u
       br_if $L0
     end)
-  (func $start (type $t0)
+  (func $setup (type $t0)
     i32.const 1024
     i32.const 27
     call $neowasm.print
     i32.const 1052
     i32.const 1
     call $neowasm.print)
-  (func $run (type $t0)
+  (func $loop (type $t0)
     (local $l0 i32) (local $l1 i32) (local $l2 i32) (local $l3 i32) (local $l4 i32)
     i32.const 255
     i32.const 0
@@ -250,7 +250,7 @@
       i32.const 1
       i32.add
       local.tee $l1
-      i32.const 1280
+      i32.const 1276
       i32.ne
       br_if $L3
     end
@@ -349,6 +349,6 @@
   (memory $memory 1)
   (export "memory" (memory 0))
   (export "_start" (func $_start))
-  (export "start" (func $start))
-  (export "run" (func $run))
+  (export "setup" (func $setup))
+  (export "loop" (func $loop))
   (data $d0 (i32.const 1024) "\0astrandtest_wheel ... start\00\0a"))
