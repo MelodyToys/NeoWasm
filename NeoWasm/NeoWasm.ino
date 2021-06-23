@@ -16,7 +16,7 @@
 #include <m3_env.h>
 #include <Adafruit_NeoPixel.h>
 
-#define WASM_STACK_SLOTS    1024
+#define WASM_STACK_SLOTS    2048
 #define NATIVE_STACK_SIZE   (32*1024)
 
 // For (most) devices that cannot allocate a 64KiB wasm page
@@ -165,8 +165,8 @@ m3ApiRawFunction(m3_neowasm_gamma32) {
 m3ApiRawFunction(m3_neowasm_ColorHSV) {
     m3ApiReturnType (uint32_t)
     m3ApiGetArg     (uint16_t, hue)
-	m3ApiGetArg     (uint8_t, sat)
-	m3ApiGetArg     (uint8_t, val)	
+	  m3ApiGetArg     (uint8_t, sat)
+	  m3ApiGetArg     (uint8_t, val)	
 	
     m3ApiReturn(strip.ColorHSV(hue, sat, val));
 }
@@ -175,8 +175,8 @@ m3ApiRawFunction(m3_neowasm_ColorHSV) {
 m3ApiRawFunction(m3_neowasm_Color) {
     m3ApiReturnType (uint32_t)
     m3ApiGetArg     (uint8_t, r)
-	m3ApiGetArg     (uint8_t, g)
-	m3ApiGetArg     (uint8_t, b)	
+	  m3ApiGetArg     (uint8_t, g)
+	  m3ApiGetArg     (uint8_t, b)	
 	
     m3ApiReturn(strip.Color(r, g, b));
 }
@@ -289,7 +289,7 @@ void wasmInit() {
 		if(DEBUG) { Serial.println(F("/init.wasm failed")); }
 		vm_init = false;
 		return;
-    }
+  }
 
 	M3Result result = m3Err_none;
 
@@ -306,7 +306,7 @@ void wasmInit() {
 	}
 
 #ifdef WASM_MEMORY_LIMIT
-    m3_runtime->memoryLimit = WASM_MEMORY_LIMIT;
+  m3_runtime->memoryLimit = WASM_MEMORY_LIMIT;
 #endif
 
 	  
@@ -575,7 +575,7 @@ void setup() {
 	);
 	server.onRequestBody([](AsyncWebServerRequest *request, uint8_t *data, size_t len, size_t index, size_t total){});
 	server.begin();
-	MDNS.addService("ota", "http", "tcp", 80);
+	MDNS.addService("http", "tcp", 80);
 }
 
 void loop() {
